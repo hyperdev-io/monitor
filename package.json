@@ -12,6 +12,7 @@
   "author": "Gantcho Kojuharov <gantcho@greyarch.net> (http://greyarch.net)",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.4",
     "most": "^1.7.0",
     "mqtt": "^2.13.0",
     "node-fetch": "^1.7.3"

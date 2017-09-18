@@ -1,67 +1,42 @@
-const most = require('most');
-const fetch = require('node-fetch');
+const most = require("most");
+const fetch = require("node-fetch");
+const _ = require("lodash");
 
-const fetchJson = path =>
+const mqttSettings = {
+  url: "mqtt://localhost:1883"
+};
+const mqtt = require("./mqtt")(mqttSettings);
+
+const fetchNodes = () =>
+  fetch(`http://10.25.96.22:2375/nodes`)
+    .then(res => res.json())
+    .then(nodes => nodes.map(node => node.Status.Addr));
+
+const fetchContainers = nodeIp =>
   fetch(
-    `http://10.25.96.22:2375/${path}?filters={"label":["bigboat.service.type"]}`,
+    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type"]}`
   ).then(res => res.json());
 
-const fetchSwarmEntities = () => {
-  const services = fetchJson('services');
-  const containers = fetchJson('containers/json');
-  return Promise.all([services, containers]);
+const fetchAllContainers = nodes => {
+  const result = Promise.resolve([]);
+  if (nodes && nodes.length) {
+    const containers = nodes.map(node => fetchContainers(node));
+    return Promise.all(containers);
+  }
+  return result;
 };
 
-const getInstanceNames = services =>
-  services.map(function(service) {
-    return service.Spec.Name;
-  });
+const nodes$ = most
+  .periodic(60000)
+  .map(fetchNodes)
+  .chain(most.fromPromise);
 
-const getInstanceState = containers =>
-  containers.reduce((instances, cnt) => {
-    const labels = cnt.Labels;
-    const instanceName = labels['bigboat.instance.name'];
-    const serviceName = labels['bigboat.service.name'];
-    if (!instances[instanceName]) {
-      instances[instanceName] = {
-        agent: {
-          url: labels['http://localhost:8080'],
-        },
-        app: {
-          name: labels['bigboat.application.name'],
-          version: labels['bigboat.application.version'],
-        },
-        storageBucket: labels['bigboat.storage.bucket'],
-        startedBy: labels['bigboat.startedBy'],
-        services: {},
-      };
-    }
-    const srvName = labels['bigboat.service.name'];
-    const domain = labels['bigboat.domain'];
-    const tld = labels['bigboat.tld'];
-    const ports = cnt.Ports.map(p => `${p.PrivatePort}/${p.Type}`);
-    instances[instanceName].services[serviceName] = {
-      container: {
-        id: cnt.Id,
-        name: cnt.Names,
-        created: cnt.Created,
-      },
-      ip: cnt.NetworkSettings.Networks['swarm-net'].IPAddress,
-      fqdn: `${srvName}.${instanceName}.${domain}.${tld}`,
-      ports,
-      state: cnt.State,
-    };
-
-    return instances;
-  }, {});
-
+const calcInstanceState = require("./instances");
 most
-  .periodic(5000)
-  .map(fetchSwarmEntities)
-  .observe(res =>
-    res.then(([services, containers]) => {
-      const instanceNames = getInstanceNames(services);
-      const instances = getInstanceState(containers);
-      console.log(JSON.stringify(instances, null, 2));
-    }),
-  );
+  .combine(fetchAllContainers, nodes$, most.periodic(5000))
+  .chain(most.fromPromise)
+  .observe(containers => {
+    const allContainers = _.flatten(containers);
+    const instances = calcInstanceState(allContainers);
+    mqtt.publish("/bigboat/instances", instances);
+  });
