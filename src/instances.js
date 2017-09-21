@@ -1,10 +1,11 @@
-module.exports = containers =>
+module.exports = networkName => containers =>
   containers.reduce((instances, cnt) => {
     const labels = cnt.Labels;
     const instanceName = labels["bigboat.instance.name"];
     const serviceName = labels["bigboat.service.name"];
     if (!instances[instanceName]) {
       instances[instanceName] = {
+        name: instanceName,
         agent: {
           url: labels["bigboat.agent.url"]
         },
@@ -30,7 +31,7 @@ module.exports = containers =>
         name: cnt.Names,
         created: cnt.Created * 1000
       },
-      ip: cnt.NetworkSettings.Networks["swarm-net"].IPAddress,
+      ip: cnt.NetworkSettings.Networks[networkName].IPAddress,
       fqdn: `${srvName}.${instanceName}.${domain}.${tld}`,
       ports,
       state: cnt.State
