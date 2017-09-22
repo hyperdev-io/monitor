@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "NET_NAME=swarm-net MQTT_URL=mqtt://localhost:1883 nodemon index.js",
+    "pretest": "istanbul cover tests",
+    "test": "mocha --recursive tests && istanbul report text html lcov"
   },
   "keywords": [],
   "author": "Gantcho Kojuharov <gantcho@greyarch.net> (http://greyarch.net)",
@@ -18,6 +19,9 @@
     "node-fetch": "^1.7.3"
   },
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.3",
+    "nodemon": "^1.12.1",
+    "testdouble": "^3.2.6"
   }
 }
