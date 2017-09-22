@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test
+      - run: docker build -t bigboat/monitor .
+      - deploy:
+          command: |
+            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            if [[ ! -z "${CIRCLE_TAG}" ]]; then
+              docker tag bigboat/monitor bigboat/monitor:${CIRCLE_TAG}
+              docker push bigboat/monitor:${CIRCLE_TAG}
+            fi
+            docker push bigboat/monitor
