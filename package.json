@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "NET_NAME=swarm-net MQTT_URL=mqtt://localhost:1883 nodemon index.js",
-    "pretest": "istanbul cover tests",
-    "test": "mocha --recursive tests && istanbul report text html lcov"
+    "test": "nyc --reporter=lcov  --reporter=text mocha --recursive tests",
+    "test:mutation": "stryker run"
   },
   "keywords": [],
   "author": "Gantcho Kojuharov <gantcho@greyarch.net> (http://greyarch.net)",
@@ -19,9 +19,20 @@
     "node-fetch": "^1.7.3"
   },
   "devDependencies": {
-    "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
     "nodemon": "^1.12.1",
+    "nyc": "^11.2.1",
+    "stryker": "^0.10.2",
+    "stryker-api": "^0.9.0",
+    "stryker-baseline-reporter": "^1.0.2",
+    "stryker-html-reporter": "^0.8.0",
+    "stryker-mocha-framework": "^0.5.0",
+    "stryker-mocha-runner": "^0.8.0",
     "testdouble": "^3.2.6"
+  },
+  "nyc": {
+    "exclude": [
+      "tests/**"
+    ]
   }
 }
