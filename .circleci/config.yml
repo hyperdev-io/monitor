@@ -28,7 +28,7 @@ jobs:
       - deploy:
           command: |
             docker build -t bigboat/monitor .
-            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push bigboat/monitor
             if [[ ! -z "${CIRCLE_TAG}" ]]; then
               docker tag bigboat/monitor bigboat/monitor:${CIRCLE_TAG}
