@@ -1,6 +1,6 @@
 {
   "name": "@bigboat/monitor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "most": "^1.7.0",
-    "mqtt": "^2.13.0",
+    "bigboat-mqtt-client": "^1.0.0",
     "node-fetch": "^1.7.3"
   },
   "devDependencies": {
@@ -31,8 +31,6 @@
     "testdouble": "^3.2.6"
   },
   "nyc": {
-    "exclude": [
-      "tests/**"
-    ]
+    "exclude": ["tests/**"]
   }
 }
