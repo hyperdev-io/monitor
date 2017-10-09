@@ -1,6 +1,6 @@
 {
   "name": "@bigboat/monitor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -31,8 +31,6 @@
     "testdouble": "^3.2.6"
   },
   "nyc": {
-    "exclude": [
-      "tests/**"
-    ]
+    "exclude": ["tests/**"]
   }
 }
