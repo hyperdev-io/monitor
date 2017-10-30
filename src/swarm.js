@@ -42,6 +42,22 @@ const fetchAllContainers = nodes => {
   return result;
 };
 
+const fetchServices = managerUrl =>
+  fetch(
+    `${managerUrl}/services?filters={"label":["bigboat.service.type=service"]}`
+  )
+    .then(res => res.json())
+    .catch(reason => {
+      console.error(
+        `Error while trying to retrieve servcies from ${managerUrl}`,
+        reason
+      );
+      return [];
+    });
+
+const fetchSwarmInfo = managerUrl => nodes =>
+  Promise.all([fetchServices(managerUrl), fetchAllContainers(nodes)]);
+
 module.exports = {
   watch: (mqtt, { managerUrl, networkName, scanInterval }) => {
     const nodes$ = most
@@ -49,19 +65,19 @@ module.exports = {
       .map(fetchNodes(managerUrl))
       .chain(most.fromPromise);
 
-    const calcInstanceState = require("./instances")(networkName);
+    const calcInstanceState = require("./instances")(networkName, managerUrl);
     most
       .combine(
-        fetchAllContainers,
+        fetchSwarmInfo(managerUrl),
         nodes$,
         most.periodic(scanInterval.containers)
       )
       .chain(most.fromPromise)
-      .observe(containers => {
+      .observe(([services, containers]) => {
         let instances = {};
         if (containers) {
           const allContainers = _.flatten(containers);
-          instances = calcInstanceState(allContainers);
+          instances = calcInstanceState(services, allContainers);
         }
         mqtt.publish("/bigboat/instances", instances);
       });
