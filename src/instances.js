@@ -23,6 +23,7 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
       };
     }
     instances[instanceName].services[serviceName] = {
+      state: "unknown",
       logsUrl: `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=200`
     };
     return instances;
@@ -32,8 +33,8 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
     const labels = cnt.Labels;
     const instanceName = labels["bigboat.instance.name"];
     const serviceName = labels["bigboat.service.name"];
-    let srv = state[instanceName].services[serviceName];
-    if (srv) {
+    if (state[instanceName] && state[instanceName].services[serviceName]) {
+      let srv = state[instanceName].services[serviceName];
       const srvName = labels["bigboat.service.name"];
       const domain = labels["bigboat.domain"];
       const tld = labels["bigboat.tld"];
