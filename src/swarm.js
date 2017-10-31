@@ -2,9 +2,11 @@ const most = require("most");
 const fetch = require("node-fetch");
 const _ = require("lodash");
 
+const fetchJson = async url => fetch(url).then(res => res.json());
+const fetchText = async url => fetch(url).then(res => res.text());
+
 const fetchNodes = managerUrl => () =>
-  fetch(`${managerUrl}/nodes`)
-    .then(res => res.json())
+  fetchJson(`${managerUrl}/nodes`)
     .then(nodes => nodes.map(node => node.Description.Hostname))
     .catch(reason => {
       console.error(
@@ -42,18 +44,28 @@ const fetchAllContainers = nodes => {
   return result;
 };
 
-const fetchServices = managerUrl =>
-  fetch(
-    `${managerUrl}/services?filters={"label":["bigboat.service.type=service"]}`
-  )
-    .then(res => res.json())
-    .catch(reason => {
-      console.error(
-        `Error while trying to retrieve servcies from ${managerUrl}`,
-        reason
-      );
-      return [];
-    });
+const fetchCurrentTasks = async (managerUrl, serviceName) =>
+  fetchJson(
+    `${managerUrl}/tasks?filters={"service":["${serviceName}"],"desired-state":["ready","running"]}`
+  );
+
+const fetchServices = async managerUrl => {
+  try {
+    const services = await fetchJson(
+      `${managerUrl}/services?filters={"label":["bigboat.service.type=service"]}`
+    );
+    await Promise.all(
+      services.map(async service => {
+        const tasks = await fetchCurrentTasks(managerUrl, service.Spec.Name);
+        service.CurrentTasks = tasks;
+      })
+    );
+    return services;
+  } catch (ex) {
+    console.error(ex);
+    return [];
+  }
+};
 
 const fetchSwarmInfo = managerUrl => nodes =>
   Promise.all([fetchServices(managerUrl), fetchAllContainers(nodes)]);

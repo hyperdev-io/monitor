@@ -1,5 +1,12 @@
 const _ = require("lodash");
 
+const calcServiceState = (desiredState, tasks) =>
+  tasks.reduce(
+    (state, task) =>
+      task.Status.State === desiredState ? state : task.Status.State,
+    desiredState
+  );
+
 module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
   const swarm = services.reduce((instances, srv) => {
     const labels = srv.Spec.Labels;
@@ -23,9 +30,15 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
       };
     }
     instances[instanceName].services[serviceName] = {
-      state: "unknown",
-      logsUrl: `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=200`
+      state: srv.CurrentTasks
+        ? calcServiceState("running", srv.CurrentTasks)
+        : "failing",
+      errors: srv.CurrentTasks.map(t => t.Status.Err).join(";"),
+      logsUrl: `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=1000`
     };
+
+    if (instances[instanceName].services[serviceName].state !== "running")
+      instances[instanceName].state = "failing";
     return instances;
   }, {});
 
@@ -39,8 +52,6 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
       const domain = labels["bigboat.domain"];
       const tld = labels["bigboat.tld"];
       const ports = cnt.Ports.map(p => `${p.PrivatePort}/${p.Type}`);
-      state[instanceName].state =
-        cnt.State === "running" ? state[instanceName].state : cnt.State;
       srv = _.merge(srv, {
         container: {
           id: cnt.Id,
