@@ -33,6 +33,10 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
       state: srv.CurrentTasks
         ? calcServiceState("running", srv.CurrentTasks)
         : "failing",
+      endpoint: {
+        path: labels["bigboat.instance.endpoint.path"],
+        protocol: labels["bigboat.instance.endpoint.protocol"]
+      },
       errors: srv.CurrentTasks.map(t => t.Status.Err).join(";"),
       logsUrl: `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=1000`
     };
