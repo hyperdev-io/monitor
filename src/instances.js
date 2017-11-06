@@ -44,6 +44,8 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
         services: {}
       };
     }
+
+    const logsUrl = `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=1000`;
     instances[instanceName].services[serviceName] = {
       fqdn: `${serviceName}.${instanceName}.${domain}.${tld}`,
       ip: getIP(srv.CurrentTasks, networkName),
@@ -55,7 +57,13 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
         protocol: labels["bigboat.instance.endpoint.protocol"]
       },
       errors: srv.CurrentTasks.map(t => t.Status.Err).join(";"),
-      logsUrl: `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=1000`
+      logs: {
+        "200": `${logsUrl}&tail=200`,
+        "500": `${logsUrl}&tail=500`,
+        "1000": `${logsUrl}&tail=1000`,
+        all: logsUrl,
+        follow: `${logsUrl}&follow=true`
+      }
     };
 
     if (instances[instanceName].services[serviceName].state !== "running")
