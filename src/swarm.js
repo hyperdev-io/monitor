@@ -21,6 +21,7 @@ const fetchContainers = nodeIp =>
     `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type=service"]}`
   )
     .then(res => res.json())
+    .then(cnts => cnts.map(c => _.merge({ node: nodeIp }, c)))
     .catch(reason => {
       console.error(
         `Error while trying to retrieve containers from node ${nodeIp}`,
