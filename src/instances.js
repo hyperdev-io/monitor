@@ -1,11 +1,16 @@
 const _ = require("lodash");
 
-const calcServiceState = (desiredState, tasks) =>
-  tasks.reduce(
-    (state, task) =>
-      task.Status.State === desiredState ? state : task.Status.State,
-    desiredState
-  );
+const calcServiceState = (desiredState, tasks) => {
+  if (tasks && tasks.reduce) {
+    return tasks.reduce(
+      (state, task) =>
+        task.Status.State === desiredState ? state : task.Status.State,
+      desiredState
+    );
+  } else {
+    return [];
+  }
+};
 
 const reduceIPs = (agg, na) => {
   agg[`${na.Network.Spec.Name}`] = na.Addresses.map(a => a.split("/")[0]);
