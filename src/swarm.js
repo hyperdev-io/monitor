@@ -18,7 +18,7 @@ const fetchNodes = managerUrl => () =>
 
 const fetchContainers = nodeIp =>
   fetch(
-    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type=service"]}`
+    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type"]}`
   )
     .then(res => res.json())
     .then(cnts => cnts.map(c => _.merge({ node: nodeIp }, c)))
@@ -53,7 +53,7 @@ const fetchCurrentTasks = async (managerUrl, serviceName) =>
 const fetchServices = async managerUrl => {
   try {
     const services = await fetchJson(
-      `${managerUrl}/services?filters={"label":["bigboat.service.type=service"]}`
+      `${managerUrl}/services?filters={"label":["bigboat.service.type"]}`
     );
     await Promise.all(
       services.map(async service => {
