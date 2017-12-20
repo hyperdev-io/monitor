@@ -1,31 +1,33 @@
-const most = require("most");
-const fetch = require("node-fetch");
-const _ = require("lodash");
+const most = require('most');
+const fetch = require('node-fetch');
+const _ = require('lodash');
 
 const fetchJson = async url => fetch(url).then(res => res.json());
 const fetchText = async url => fetch(url).then(res => res.text());
 
 const fetchNodes = managerUrl => () =>
   fetchJson(`${managerUrl}/nodes`)
-    .then(nodes => nodes.map(node => node.Description.Hostname))
+    .then(nodes =>
+      nodes.map(node => node.Status.Addr || node.Description.Hostname),
+    )
     .catch(reason => {
       console.error(
         `Error while trying to retrieve swarm nodes information from ${managerUrl}`,
-        reason
+        reason,
       );
       return [];
     });
 
 const fetchContainers = nodeIp =>
   fetch(
-    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type"]}`
+    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type"]}`,
   )
     .then(res => res.json())
     .then(cnts => cnts.map(c => _.merge({ node: nodeIp }, c)))
     .catch(reason => {
       console.error(
         `Error while trying to retrieve containers from node ${nodeIp}`,
-        reason
+        reason,
       );
       return [];
     });
@@ -37,7 +39,7 @@ const fetchAllContainers = nodes => {
     return Promise.all(containers).catch(reason => {
       console.error(
         `Error while trying to retrieve containers information`,
-        reason
+        reason,
       );
       return [];
     });
@@ -47,19 +49,19 @@ const fetchAllContainers = nodes => {
 
 const fetchCurrentTasks = async (managerUrl, serviceName) =>
   fetchJson(
-    `${managerUrl}/tasks?filters={"service":["${serviceName}"],"desired-state":["ready","running"]}`
+    `${managerUrl}/tasks?filters={"service":["${serviceName}"],"desired-state":["ready","running"]}`,
   );
 
 const fetchServices = async managerUrl => {
   try {
     const services = await fetchJson(
-      `${managerUrl}/services?filters={"label":["bigboat.service.type"]}`
+      `${managerUrl}/services?filters={"label":["bigboat.service.type"]}`,
     );
     await Promise.all(
       services.map(async service => {
         const tasks = await fetchCurrentTasks(managerUrl, service.Spec.Name);
         service.CurrentTasks = tasks;
-      })
+      }),
     );
     return services;
   } catch (ex) {
@@ -78,12 +80,12 @@ module.exports = {
       .map(fetchNodes(managerUrl))
       .chain(most.fromPromise);
 
-    const calcInstanceState = require("./instances")(networkName, managerUrl);
+    const calcInstanceState = require('./instances')(networkName, managerUrl);
     most
       .combine(
         fetchSwarmInfo(managerUrl),
         nodes$,
-        most.periodic(scanInterval.containers)
+        most.periodic(scanInterval.containers),
       )
       .chain(most.fromPromise)
       .observe(([services, containers]) => {
@@ -92,7 +94,7 @@ module.exports = {
           const allContainers = _.flatten(containers);
           instances = calcInstanceState(services, allContainers);
         }
-        mqtt.publish("/bigboat/instances", instances);
+        mqtt.publish('/bigboat/instances', instances);
       });
-  }
+  },
 };
