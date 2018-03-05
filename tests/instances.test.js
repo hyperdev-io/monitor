@@ -5,7 +5,7 @@ const calcInstanceState = instances("swarm-net", "http://10.25.96.21:2375");
 const testData = require("./data");
 
 const check = data => () => {
-  const actual = calcInstanceState(data.services, data.containers);
+  const actual = calcInstanceState(data.services);
   assert.deepEqual(actual, data.instances);
 };
 

@@ -10,13 +10,12 @@ const opts = {
   managerUrl,
   networkName,
   scanInterval: {
-    nodes: 60000,
-    containers: 5000
+    services: 5000
   }
 };
 
 process.on("unhandledRejection", up => {
-  // Crash the node process on ounhandled rejection
+  // Crash the node process on unhandled rejection
   throw up;
 });
 module.exports = () => {
