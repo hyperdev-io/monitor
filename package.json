@@ -1,0 +1,22 @@
+{
+  "name": "monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Gantcho Kojuharov <gantcho@greyarch.net> (http://greyarch.net)",
+  "license": "ISC",
+  "dependencies": {
+    "most": "^1.7.0",
+    "mqtt": "^2.13.0",
+    "node-fetch": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}
