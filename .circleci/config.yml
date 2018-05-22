@@ -16,12 +16,21 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test
-      - run: docker build -t bigboat/monitor .
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.06.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
       - deploy:
           command: |
+            docker build -t bigboat/monitor .
             docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            docker push bigboat/monitor
             if [[ ! -z "${CIRCLE_TAG}" ]]; then
               docker tag bigboat/monitor bigboat/monitor:${CIRCLE_TAG}
               docker push bigboat/monitor:${CIRCLE_TAG}
             fi
-            docker push bigboat/monitor
