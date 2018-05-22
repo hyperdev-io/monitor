@@ -4,13 +4,17 @@ const calcInstanceState = instances("swarm-net");
 
 const testData = require("./data");
 
+const check = data => () => {
+  const actual = calcInstanceState(data.containers);
+  assert.deepEqual(actual, data.instances);
+};
+
 describe("Instance state", () => {
-  it("from a single running conainer", () => {
-    const actual = calcInstanceState(testData.single.containers);
-    assert.deepEqual(actual, testData.single.instances);
-  });
-  it("from a single failing conainer", () => {
-    const actual = calcInstanceState(testData.failing.containers);
-    assert.deepEqual(actual, testData.failing.instances);
-  });
+  it("from a single running conainer", check(testData.single.running));
+  it("from a single failing conainer", check(testData.single.failing));
+  it("from multiple running conainers", check(testData.multi.running));
+  it(
+    "from multiple conainers where one is failing",
+    check(testData.multi.failing)
+  );
 });
