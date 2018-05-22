@@ -1,11 +1,13 @@
+const assert = require("assert");
+
 const swarm = require("./swarm");
 const mqtt = require("./mqtt");
 
-const managerUrl = process.env.SWARM_MANAGER_URL || "http://10.25.96.21:2375";
-const networkName = process.env.NET_NAME || "swarm-net";
+const managerUrl = process.env.SWARM_MANAGER_URL;
+const networkName = process.env.NET_NAME;
 
 const mqttSettings = {
-  url: process.env.MQTT_URL || "mqtt://localhost:1883",
+  url: process.env.MQTT_URL,
   username: process.env.MQTT_USERNAME,
   passwrod: process.env.MQTT_PASSWORD
 };
@@ -19,4 +21,10 @@ const opts = {
   }
 };
 
-swarm.watch(mqtt(mqttSettings), opts);
+module.exports = () => {
+  assert(managerUrl, "SWARM_MANAGER_URL is required");
+  assert(networkName, "NET_NAME is required");
+  assert(mqttSettings.url, "MQTT_URL is required");
+
+  swarm.watch(mqtt(mqttSettings), opts);
+};

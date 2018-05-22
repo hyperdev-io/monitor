@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  monitor:
+    image: bigboat/monitor
+    network_mode: host
+    environment:
+       SWARM_MANAGER_URL: http://10.25.96.21:2375
+       NET_NAME: swarm-net
+       MQTT_URL: mqtt://localhost:1883
