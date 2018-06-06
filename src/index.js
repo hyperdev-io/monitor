@@ -1,5 +1,5 @@
 const assert = require("assert");
-const mqtt = require("bigboat-mqtt-client");
+const mqtt = require("@bigboat/mqtt-client");
 
 const swarm = require("./swarm");
 

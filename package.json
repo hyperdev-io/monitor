@@ -13,9 +13,9 @@
   "author": "Gantcho Kojuharov <gantcho@greyarch.net> (http://greyarch.net)",
   "license": "ISC",
   "dependencies": {
+    "@bigboat/mqtt-client": "^1.1.0",
     "lodash": "^4.17.4",
     "most": "^1.7.0",
-    "bigboat-mqtt-client": "^1.0.0",
     "node-fetch": "^1.7.3"
   },
   "devDependencies": {
@@ -31,6 +31,8 @@
     "testdouble": "^3.2.6"
   },
   "nyc": {
-    "exclude": ["tests/**"]
+    "exclude": [
+      "tests/**"
+    ]
   }
 }

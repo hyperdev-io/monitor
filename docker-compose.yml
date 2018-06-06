@@ -2,7 +2,7 @@ version: '2'
 
 services:
   monitor:
-    image: bigboat/monitor
+    build: .
     network_mode: host
     environment:
        SWARM_MANAGER_URL: http://10.25.96.21:2375
