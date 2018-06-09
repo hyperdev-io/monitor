@@ -16,7 +16,7 @@ const fetchNodes = managerUrl => () =>
 
 const fetchContainers = nodeIp =>
   fetch(
-    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type"]}`
+    `http://${nodeIp}:2375/containers/json?filters={"label":["bigboat.service.type=service"]}`
   )
     .then(res => res.json())
     .catch(reason => {
