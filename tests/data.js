@@ -1,6 +1,102 @@
 module.exports = {
   single: {
     running: {
+      services: [
+        {
+          ID: "jjqf4db07jvggtwx6ces4qszk",
+          Version: {
+            Index: 128913
+          },
+          CreatedAt: "2017-09-22T07:40:12.343163341Z",
+          UpdatedAt: "2017-09-22T07:40:12.343163341Z",
+          Spec: {
+            Name: "swarm-sonar_www",
+            Labels: {
+              "bigboat.agent.url": "http://agent",
+              "bigboat.application.name": "sonar",
+              "bigboat.application.version": "6.4.1",
+              "bigboat.domain": "swarm",
+              "bigboat.instance.name": "sonar",
+              "bigboat.service.name": "www",
+              "bigboat.service.type": "service",
+              "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+              "bigboat.storage.bucket": "sonar",
+              "bigboat.tld": "ictu",
+              "com.docker.stack.image": "ictu/sonar:6.4.1",
+              "com.docker.stack.namespace": "swarm-sonar"
+            },
+            TaskTemplate: {
+              ContainerSpec: {
+                Image:
+                  "ictu/sonar:6.4.1@sha256:c72c8628da3326fae062d6e80710d85243c69133d04803563433dc3990c09bb8",
+                Labels: {
+                  "bigboat.agent.url": "http://agent",
+                  "bigboat.application.name": "sonar",
+                  "bigboat.application.version": "6.4.1",
+                  "bigboat.domain": "swarm",
+                  "bigboat.instance.name": "sonar",
+                  "bigboat.service.name": "www",
+                  "bigboat.service.type": "service",
+                  "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+                  "bigboat.storage.bucket": "sonar",
+                  "bigboat.tld": "ictu",
+                  "com.docker.stack.namespace": "swarm-sonar"
+                },
+                Hostname: "www.sonar.swarm.ictu",
+                Env: [
+                  "SONARQUBE_JDBC_PASSWORD=sonar",
+                  "SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar",
+                  "SONARQUBE_JDBC_USERNAME=sonar"
+                ],
+                Privileges: {
+                  CredentialSpec: null,
+                  SELinuxContext: null
+                },
+                Mounts: [
+                  {
+                    Type: "bind",
+                    Source: "/etc/localtime",
+                    Target: "/etc/localtime",
+                    ReadOnly: true
+                  }
+                ]
+              },
+              Resources: {
+                Limits: {
+                  MemoryBytes: 1073741824
+                }
+              },
+              Placement: {
+                Platforms: [
+                  {
+                    Architecture: "amd64",
+                    OS: "linux"
+                  }
+                ]
+              },
+              Networks: [
+                {
+                  Target: "yx1hkofxp9os0n05gsx7wpyde",
+                  Aliases: ["www.sonar.swarm.ictu", "www"]
+                }
+              ],
+              ForceUpdate: 0,
+              Runtime: "container"
+            },
+            Mode: {
+              Replicated: {
+                Replicas: 1
+              }
+            },
+            EndpointSpec: {
+              Mode: "dnsrr"
+            }
+          },
+          Endpoint: {
+            Spec: {}
+          }
+        }
+      ],
       containers: [
         {
           Id:
@@ -104,6 +200,8 @@ module.exports = {
           state: "running",
           services: {
             www: {
+              logsUrl:
+                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=200",
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -120,6 +218,102 @@ module.exports = {
       }
     },
     failing: {
+      services: [
+        {
+          ID: "jjqf4db07jvggtwx6ces4qszk",
+          Version: {
+            Index: 128913
+          },
+          CreatedAt: "2017-09-22T07:40:12.343163341Z",
+          UpdatedAt: "2017-09-22T07:40:12.343163341Z",
+          Spec: {
+            Name: "swarm-sonar_www",
+            Labels: {
+              "bigboat.agent.url": "http://agent",
+              "bigboat.application.name": "sonar",
+              "bigboat.application.version": "6.4.1",
+              "bigboat.domain": "swarm",
+              "bigboat.instance.name": "sonar",
+              "bigboat.service.name": "www",
+              "bigboat.service.type": "service",
+              "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+              "bigboat.storage.bucket": "sonar",
+              "bigboat.tld": "ictu",
+              "com.docker.stack.image": "ictu/sonar:6.4.1",
+              "com.docker.stack.namespace": "swarm-sonar"
+            },
+            TaskTemplate: {
+              ContainerSpec: {
+                Image:
+                  "ictu/sonar:6.4.1@sha256:c72c8628da3326fae062d6e80710d85243c69133d04803563433dc3990c09bb8",
+                Labels: {
+                  "bigboat.agent.url": "http://agent",
+                  "bigboat.application.name": "sonar",
+                  "bigboat.application.version": "6.4.1",
+                  "bigboat.domain": "swarm",
+                  "bigboat.instance.name": "sonar",
+                  "bigboat.service.name": "www",
+                  "bigboat.service.type": "service",
+                  "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+                  "bigboat.storage.bucket": "sonar",
+                  "bigboat.tld": "ictu",
+                  "com.docker.stack.namespace": "swarm-sonar"
+                },
+                Hostname: "www.sonar.swarm.ictu",
+                Env: [
+                  "SONARQUBE_JDBC_PASSWORD=sonar",
+                  "SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar",
+                  "SONARQUBE_JDBC_USERNAME=sonar"
+                ],
+                Privileges: {
+                  CredentialSpec: null,
+                  SELinuxContext: null
+                },
+                Mounts: [
+                  {
+                    Type: "bind",
+                    Source: "/etc/localtime",
+                    Target: "/etc/localtime",
+                    ReadOnly: true
+                  }
+                ]
+              },
+              Resources: {
+                Limits: {
+                  MemoryBytes: 1073741824
+                }
+              },
+              Placement: {
+                Platforms: [
+                  {
+                    Architecture: "amd64",
+                    OS: "linux"
+                  }
+                ]
+              },
+              Networks: [
+                {
+                  Target: "yx1hkofxp9os0n05gsx7wpyde",
+                  Aliases: ["www.sonar.swarm.ictu", "www"]
+                }
+              ],
+              ForceUpdate: 0,
+              Runtime: "container"
+            },
+            Mode: {
+              Replicated: {
+                Replicas: 1
+              }
+            },
+            EndpointSpec: {
+              Mode: "dnsrr"
+            }
+          },
+          Endpoint: {
+            Spec: {}
+          }
+        }
+      ],
       containers: [
         {
           Id:
@@ -223,6 +417,8 @@ module.exports = {
           state: "failing",
           services: {
             www: {
+              logsUrl:
+                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=200",
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -241,6 +437,226 @@ module.exports = {
   },
   multi: {
     running: {
+      services: [
+        {
+          ID: "jjqf4db07jvggtwx6ces4qszk",
+          Version: {
+            Index: 128913
+          },
+          CreatedAt: "2017-09-22T07:40:12.343163341Z",
+          UpdatedAt: "2017-09-22T07:40:12.343163341Z",
+          Spec: {
+            Name: "swarm-sonar_www",
+            Labels: {
+              "bigboat.agent.url": "http://agent",
+              "bigboat.application.name": "sonar",
+              "bigboat.application.version": "6.4.1",
+              "bigboat.domain": "swarm",
+              "bigboat.instance.name": "sonar",
+              "bigboat.service.name": "www",
+              "bigboat.service.type": "service",
+              "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+              "bigboat.storage.bucket": "sonar",
+              "bigboat.tld": "ictu",
+              "com.docker.stack.image": "ictu/sonar:6.4.1",
+              "com.docker.stack.namespace": "swarm-sonar"
+            },
+            TaskTemplate: {
+              ContainerSpec: {
+                Image:
+                  "ictu/sonar:6.4.1@sha256:c72c8628da3326fae062d6e80710d85243c69133d04803563433dc3990c09bb8",
+                Labels: {
+                  "bigboat.agent.url": "http://agent",
+                  "bigboat.application.name": "sonar",
+                  "bigboat.application.version": "6.4.1",
+                  "bigboat.domain": "swarm",
+                  "bigboat.instance.name": "sonar",
+                  "bigboat.service.name": "www",
+                  "bigboat.service.type": "service",
+                  "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+                  "bigboat.storage.bucket": "sonar",
+                  "bigboat.tld": "ictu",
+                  "com.docker.stack.namespace": "swarm-sonar"
+                },
+                Hostname: "www.sonar.swarm.ictu",
+                Env: [
+                  "SONARQUBE_JDBC_PASSWORD=sonar",
+                  "SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar",
+                  "SONARQUBE_JDBC_USERNAME=sonar"
+                ],
+                Privileges: {
+                  CredentialSpec: null,
+                  SELinuxContext: null
+                },
+                Mounts: [
+                  {
+                    Type: "bind",
+                    Source: "/etc/localtime",
+                    Target: "/etc/localtime",
+                    ReadOnly: true
+                  }
+                ]
+              },
+              Resources: {
+                Limits: {
+                  MemoryBytes: 1073741824
+                }
+              },
+              Placement: {
+                Platforms: [
+                  {
+                    Architecture: "amd64",
+                    OS: "linux"
+                  }
+                ]
+              },
+              Networks: [
+                {
+                  Target: "yx1hkofxp9os0n05gsx7wpyde",
+                  Aliases: ["www.sonar.swarm.ictu", "www"]
+                }
+              ],
+              ForceUpdate: 0,
+              Runtime: "container"
+            },
+            Mode: {
+              Replicated: {
+                Replicas: 1
+              }
+            },
+            EndpointSpec: {
+              Mode: "dnsrr"
+            }
+          },
+          Endpoint: {
+            Spec: {}
+          }
+        },
+        {
+          ID: "oyri69t9tn4lvcyx7zs4myfkx",
+          Version: {
+            Index: 128908
+          },
+          CreatedAt: "2017-09-22T07:40:09.384537516Z",
+          UpdatedAt: "2017-09-22T07:40:09.384537516Z",
+          Spec: {
+            Name: "swarm-sonar_db",
+            Labels: {
+              "bigboat.agent.url": "http://agent",
+              "bigboat.application.name": "sonar",
+              "bigboat.application.version": "6.4.1",
+              "bigboat.domain": "swarm",
+              "bigboat.instance.name": "sonar",
+              "bigboat.service.name": "db",
+              "bigboat.service.type": "service",
+              "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+              "bigboat.storage.bucket": "sonar",
+              "bigboat.tld": "ictu",
+              "com.docker.stack.image": "postgres",
+              "com.docker.stack.namespace": "swarm-sonar"
+            },
+            TaskTemplate: {
+              ContainerSpec: {
+                Image:
+                  "postgres:latest@sha256:144221a1e46af653bdda2bbb8e46ad3dd0c3f61ec0430030581031937f1d589d",
+                Labels: {
+                  "bigboat.agent.url": "http://agent",
+                  "bigboat.application.name": "sonar",
+                  "bigboat.application.version": "6.4.1",
+                  "bigboat.domain": "swarm",
+                  "bigboat.instance.name": "sonar",
+                  "bigboat.service.name": "db",
+                  "bigboat.service.type": "service",
+                  "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+                  "bigboat.storage.bucket": "sonar",
+                  "bigboat.tld": "ictu",
+                  "com.docker.stack.namespace": "swarm-sonar"
+                },
+                Hostname: "db.sonar.swarm.ictu",
+                Env: ["POSTGRES_PASSWORD=sonar", "POSTGRES_USER=sonar"],
+                Privileges: {
+                  CredentialSpec: null,
+                  SELinuxContext: null
+                },
+                Mounts: [
+                  {
+                    Type: "bind",
+                    Source: "/shared/data/swarm/sonar/postgresql",
+                    Target: "/var/lib/postgresql"
+                  },
+                  {
+                    Type: "bind",
+                    Source: "/shared/data/swarm/sonar/postgresql_data",
+                    Target: "/var/lib/postgresql/data"
+                  },
+                  {
+                    Type: "bind",
+                    Source: "/etc/localtime",
+                    Target: "/etc/localtime",
+                    ReadOnly: true
+                  }
+                ]
+              },
+              Resources: {
+                Limits: {
+                  MemoryBytes: 1073741824
+                }
+              },
+              Placement: {
+                Platforms: [
+                  {
+                    Architecture: "amd64",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "arm",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "arm",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "arm64",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "386",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "ppc64le",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "s390x",
+                    OS: "linux"
+                  }
+                ]
+              },
+              Networks: [
+                {
+                  Target: "yx1hkofxp9os0n05gsx7wpyde",
+                  Aliases: ["db.sonar.swarm.ictu", "db"]
+                }
+              ],
+              ForceUpdate: 0,
+              Runtime: "container"
+            },
+            Mode: {
+              Replicated: {
+                Replicas: 1
+              }
+            },
+            EndpointSpec: {
+              Mode: "dnsrr"
+            }
+          },
+          Endpoint: {
+            Spec: {}
+          }
+        }
+      ],
       containers: [
         {
           Id:
@@ -434,6 +850,8 @@ module.exports = {
           state: "running",
           services: {
             www: {
+              logsUrl:
+                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=200",
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -446,6 +864,8 @@ module.exports = {
               state: "running"
             },
             db: {
+              logsUrl:
+                "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=200",
               container: {
                 id:
                   "293d7ff81e1dcd1460e7148541562d2bb57a5f6c540d5f500a88d9828ad83523",
@@ -462,6 +882,226 @@ module.exports = {
       }
     },
     failing: {
+      services: [
+        {
+          ID: "jjqf4db07jvggtwx6ces4qszk",
+          Version: {
+            Index: 128913
+          },
+          CreatedAt: "2017-09-22T07:40:12.343163341Z",
+          UpdatedAt: "2017-09-22T07:40:12.343163341Z",
+          Spec: {
+            Name: "swarm-sonar_www",
+            Labels: {
+              "bigboat.agent.url": "http://agent",
+              "bigboat.application.name": "sonar",
+              "bigboat.application.version": "6.4.1",
+              "bigboat.domain": "swarm",
+              "bigboat.instance.name": "sonar",
+              "bigboat.service.name": "www",
+              "bigboat.service.type": "service",
+              "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+              "bigboat.storage.bucket": "sonar",
+              "bigboat.tld": "ictu",
+              "com.docker.stack.image": "ictu/sonar:6.4.1",
+              "com.docker.stack.namespace": "swarm-sonar"
+            },
+            TaskTemplate: {
+              ContainerSpec: {
+                Image:
+                  "ictu/sonar:6.4.1@sha256:c72c8628da3326fae062d6e80710d85243c69133d04803563433dc3990c09bb8",
+                Labels: {
+                  "bigboat.agent.url": "http://agent",
+                  "bigboat.application.name": "sonar",
+                  "bigboat.application.version": "6.4.1",
+                  "bigboat.domain": "swarm",
+                  "bigboat.instance.name": "sonar",
+                  "bigboat.service.name": "www",
+                  "bigboat.service.type": "service",
+                  "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+                  "bigboat.storage.bucket": "sonar",
+                  "bigboat.tld": "ictu",
+                  "com.docker.stack.namespace": "swarm-sonar"
+                },
+                Hostname: "www.sonar.swarm.ictu",
+                Env: [
+                  "SONARQUBE_JDBC_PASSWORD=sonar",
+                  "SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar",
+                  "SONARQUBE_JDBC_USERNAME=sonar"
+                ],
+                Privileges: {
+                  CredentialSpec: null,
+                  SELinuxContext: null
+                },
+                Mounts: [
+                  {
+                    Type: "bind",
+                    Source: "/etc/localtime",
+                    Target: "/etc/localtime",
+                    ReadOnly: true
+                  }
+                ]
+              },
+              Resources: {
+                Limits: {
+                  MemoryBytes: 1073741824
+                }
+              },
+              Placement: {
+                Platforms: [
+                  {
+                    Architecture: "amd64",
+                    OS: "linux"
+                  }
+                ]
+              },
+              Networks: [
+                {
+                  Target: "yx1hkofxp9os0n05gsx7wpyde",
+                  Aliases: ["www.sonar.swarm.ictu", "www"]
+                }
+              ],
+              ForceUpdate: 0,
+              Runtime: "container"
+            },
+            Mode: {
+              Replicated: {
+                Replicas: 1
+              }
+            },
+            EndpointSpec: {
+              Mode: "dnsrr"
+            }
+          },
+          Endpoint: {
+            Spec: {}
+          }
+        },
+        {
+          ID: "oyri69t9tn4lvcyx7zs4myfkx",
+          Version: {
+            Index: 128908
+          },
+          CreatedAt: "2017-09-22T07:40:09.384537516Z",
+          UpdatedAt: "2017-09-22T07:40:09.384537516Z",
+          Spec: {
+            Name: "swarm-sonar_db",
+            Labels: {
+              "bigboat.agent.url": "http://agent",
+              "bigboat.application.name": "sonar",
+              "bigboat.application.version": "6.4.1",
+              "bigboat.domain": "swarm",
+              "bigboat.instance.name": "sonar",
+              "bigboat.service.name": "db",
+              "bigboat.service.type": "service",
+              "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+              "bigboat.storage.bucket": "sonar",
+              "bigboat.tld": "ictu",
+              "com.docker.stack.image": "postgres",
+              "com.docker.stack.namespace": "swarm-sonar"
+            },
+            TaskTemplate: {
+              ContainerSpec: {
+                Image:
+                  "postgres:latest@sha256:144221a1e46af653bdda2bbb8e46ad3dd0c3f61ec0430030581031937f1d589d",
+                Labels: {
+                  "bigboat.agent.url": "http://agent",
+                  "bigboat.application.name": "sonar",
+                  "bigboat.application.version": "6.4.1",
+                  "bigboat.domain": "swarm",
+                  "bigboat.instance.name": "sonar",
+                  "bigboat.service.name": "db",
+                  "bigboat.service.type": "service",
+                  "bigboat.startedBy": "ex9W6G6RdwzMRAFut",
+                  "bigboat.storage.bucket": "sonar",
+                  "bigboat.tld": "ictu",
+                  "com.docker.stack.namespace": "swarm-sonar"
+                },
+                Hostname: "db.sonar.swarm.ictu",
+                Env: ["POSTGRES_PASSWORD=sonar", "POSTGRES_USER=sonar"],
+                Privileges: {
+                  CredentialSpec: null,
+                  SELinuxContext: null
+                },
+                Mounts: [
+                  {
+                    Type: "bind",
+                    Source: "/shared/data/swarm/sonar/postgresql",
+                    Target: "/var/lib/postgresql"
+                  },
+                  {
+                    Type: "bind",
+                    Source: "/shared/data/swarm/sonar/postgresql_data",
+                    Target: "/var/lib/postgresql/data"
+                  },
+                  {
+                    Type: "bind",
+                    Source: "/etc/localtime",
+                    Target: "/etc/localtime",
+                    ReadOnly: true
+                  }
+                ]
+              },
+              Resources: {
+                Limits: {
+                  MemoryBytes: 1073741824
+                }
+              },
+              Placement: {
+                Platforms: [
+                  {
+                    Architecture: "amd64",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "arm",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "arm",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "arm64",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "386",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "ppc64le",
+                    OS: "linux"
+                  },
+                  {
+                    Architecture: "s390x",
+                    OS: "linux"
+                  }
+                ]
+              },
+              Networks: [
+                {
+                  Target: "yx1hkofxp9os0n05gsx7wpyde",
+                  Aliases: ["db.sonar.swarm.ictu", "db"]
+                }
+              ],
+              ForceUpdate: 0,
+              Runtime: "container"
+            },
+            Mode: {
+              Replicated: {
+                Replicas: 1
+              }
+            },
+            EndpointSpec: {
+              Mode: "dnsrr"
+            }
+          },
+          Endpoint: {
+            Spec: {}
+          }
+        }
+      ],
       containers: [
         {
           Id:
@@ -655,6 +1295,8 @@ module.exports = {
           state: "failing",
           services: {
             www: {
+              logsUrl:
+                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=200",
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -667,6 +1309,8 @@ module.exports = {
               state: "failing"
             },
             db: {
+              logsUrl:
+                "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=200",
               container: {
                 id:
                   "293d7ff81e1dcd1460e7148541562d2bb57a5f6c540d5f500a88d9828ad83523",
