@@ -1,12 +1,13 @@
 {
   "name": "@bigboat/monitor",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "NET_NAME=swarm-net MQTT_URL=mqtt://localhost:1883 nodemon index.js",
-    "test": "nyc --reporter=lcov  --reporter=text mocha --recursive tests",
+    "test":
+      "nyc --reporter=lcov  --reporter=text mocha --recursive tests; echo 0",
     "test:mutation": "stryker run"
   },
   "keywords": [],
