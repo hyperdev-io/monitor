@@ -7,11 +7,28 @@ const calcServiceState = (desiredState, tasks) =>
     desiredState
   );
 
+const reduceIPs = (agg, na) => {
+  agg[`${na.Network.Spec.Name}`] = na.Addresses.map(a => a.split("/")[0]);
+  return agg;
+};
+
+const getIPs = (tasks, netName) => {
+  if (tasks && tasks.map) {
+    return _.flatten(
+      tasks.map(t => t.NetworksAttachments.reduce(reduceIPs, {})[netName])
+    );
+  } else {
+    return [];
+  }
+};
+
 module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
   const swarm = services.reduce((instances, srv) => {
     const labels = srv.Spec.Labels;
     const instanceName = labels["bigboat.instance.name"];
     const serviceName = labels["bigboat.service.name"];
+    const domain = labels["bigboat.domain"];
+    const tld = labels["bigboat.tld"];
 
     if (!instances[instanceName]) {
       instances[instanceName] = {
@@ -30,6 +47,8 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
       };
     }
     instances[instanceName].services[serviceName] = {
+      fqdn: `${serviceName}.${instanceName}.${domain}.${tld}`,
+      ip: getIPs(srv.CurrentTasks, networkName),
       state: srv.CurrentTasks
         ? calcServiceState("running", srv.CurrentTasks)
         : "failing",
@@ -52,9 +71,6 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
     const serviceName = labels["bigboat.service.name"];
     if (state[instanceName] && state[instanceName].services[serviceName]) {
       let srv = state[instanceName].services[serviceName];
-      const srvName = labels["bigboat.service.name"];
-      const domain = labels["bigboat.domain"];
-      const tld = labels["bigboat.tld"];
       const ports = cnt.Ports.map(p => `${p.PrivatePort}/${p.Type}`);
       srv = _.merge(srv, {
         container: {
@@ -62,10 +78,7 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
           name: cnt.Names,
           created: cnt.Created * 1000
         },
-        ip: cnt.NetworkSettings.Networks[networkName].IPAddress,
-        fqdn: `${srvName}.${instanceName}.${domain}.${tld}`,
-        ports,
-        state: cnt.State
+        ports
       });
     }
     return state;
