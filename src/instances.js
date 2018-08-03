@@ -12,13 +12,11 @@ const reduceIPs = (agg, na) => {
   return agg;
 };
 
-const getIPs = (tasks, netName) => {
+const getIP = (tasks, netName) => {
   if (tasks && tasks.map) {
     return _.flatten(
       tasks.map(t => t.NetworksAttachments.reduce(reduceIPs, {})[netName])
-    );
-  } else {
-    return [];
+    )[0];
   }
 };
 
@@ -48,7 +46,7 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
     }
     instances[instanceName].services[serviceName] = {
       fqdn: `${serviceName}.${instanceName}.${domain}.${tld}`,
-      ip: getIPs(srv.CurrentTasks, networkName),
+      ip: getIP(srv.CurrentTasks, networkName),
       state: srv.CurrentTasks
         ? calcServiceState("running", srv.CurrentTasks)
         : "failing",

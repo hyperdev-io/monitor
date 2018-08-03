@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "NET_NAME=swarm-net MQTT_URL=mqtt://localhost:1883 nodemon index.js",
-    "test":
-      "nyc --reporter=lcov  --reporter=text mocha --recursive tests; echo 0",
+    "test": "nyc --reporter=lcov  --reporter=text mocha --recursive tests",
     "test:mutation": "stryker run"
   },
   "keywords": [],

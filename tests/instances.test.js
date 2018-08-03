@@ -10,11 +10,11 @@ const check = data => () => {
 };
 
 describe("Instance state", () => {
-  it("from a single running conainer", check(testData.single.running));
-  it("from a single failing conainer", check(testData.single.failing));
-  it("from multiple running conainers", check(testData.multi.running));
+  it("from a single running service", check(testData.single.running));
+  it("from a single failing service", check(testData.single.failing));
+  it("from multiple running services", check(testData.multi.running));
   it(
-    "from multiple conainers where one is failing",
+    "from multiple services where one is failing",
     check(testData.multi.failing)
   );
 });
