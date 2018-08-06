@@ -376,6 +376,33 @@ const makeFailing = service =>
     CurrentTasks: [{ Status: { State: "failing" } }]
   });
 
+const logs = {
+  db: {
+    "200":
+      "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000&tail=200",
+    "500":
+      "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000&tail=500",
+    "1000":
+      "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000&tail=1000",
+    all:
+      "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+    follow:
+      "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000&follow=true"
+  },
+  www: {
+    "200":
+      "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000&tail=200",
+    "500":
+      "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000&tail=500",
+    "1000":
+      "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000&tail=1000",
+    all:
+      "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+    follow:
+      "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000&follow=true"
+  }
+};
+
 module.exports = {
   single: {
     running: {
@@ -396,8 +423,7 @@ module.exports = {
           state: "running",
           services: {
             www: {
-              logsUrl:
-                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+              logs: logs.www,
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -436,8 +462,7 @@ module.exports = {
           state: "failing",
           services: {
             www: {
-              logsUrl:
-                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+              logs: logs.www,
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -478,8 +503,7 @@ module.exports = {
           state: "running",
           services: {
             www: {
-              logsUrl:
-                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+              logs: logs.www,
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -502,8 +526,7 @@ module.exports = {
                 protocol: undefined
               },
               errors: "",
-              logsUrl:
-                "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+              logs: logs.db,
               container: {
                 id:
                   "10434d52c8a2652a1bd31a19b16a8f76ae04ae245c0f2f56b781855ddaf63037",
@@ -537,8 +560,7 @@ module.exports = {
           state: "failing",
           services: {
             www: {
-              logsUrl:
-                "http://10.25.96.21:2375/services/jjqf4db07jvggtwx6ces4qszk/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+              logs: logs.www,
               container: {
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
@@ -561,8 +583,7 @@ module.exports = {
                 protocol: undefined
               },
               errors: "",
-              logsUrl:
-                "http://10.25.96.21:2375/services/oyri69t9tn4lvcyx7zs4myfkx/logs?timestamps=true&stdout=true&stderr=true&tail=1000",
+              logs: logs.db,
               container: {
                 id:
                   "10434d52c8a2652a1bd31a19b16a8f76ae04ae245c0f2f56b781855ddaf63037",
