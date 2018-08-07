@@ -144,7 +144,6 @@ const tasks = [
     ]
   }
 ];
-
 const services = [
   {
     ID: "jjqf4db07jvggtwx6ces4qszk",
@@ -191,9 +190,9 @@ const services = [
     CurrentTasks: [tasks[1]]
   }
 ];
-
 const containers = [
   {
+    node: "10.25.96.21",
     Id: "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
     Names: ["/swarm-sonar_www.1.k45jksij0zwvd1c3yyfd1kuy2"],
     Image:
@@ -279,6 +278,7 @@ const containers = [
     ]
   },
   {
+    node: "10.25.96.22",
     Id: "10434d52c8a2652a1bd31a19b16a8f76ae04ae245c0f2f56b781855ddaf63037",
     Names: ["/swarm-sonar_db.1.em4yby2u5v9b5eoz4qxmbmcto"],
     Image:
@@ -425,6 +425,7 @@ module.exports = {
             www: {
               logs: logs.www,
               container: {
+                node: "10.25.96.21",
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
                 name: ["/swarm-sonar_www.1.k45jksij0zwvd1c3yyfd1kuy2"],
@@ -464,6 +465,7 @@ module.exports = {
             www: {
               logs: logs.www,
               container: {
+                node: "10.25.96.21",
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
                 name: ["/swarm-sonar_www.1.k45jksij0zwvd1c3yyfd1kuy2"],
@@ -505,6 +507,7 @@ module.exports = {
             www: {
               logs: logs.www,
               container: {
+                node: "10.25.96.21",
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
                 name: ["/swarm-sonar_www.1.k45jksij0zwvd1c3yyfd1kuy2"],
@@ -528,6 +531,7 @@ module.exports = {
               errors: "",
               logs: logs.db,
               container: {
+                node: "10.25.96.22",
                 id:
                   "10434d52c8a2652a1bd31a19b16a8f76ae04ae245c0f2f56b781855ddaf63037",
                 name: ["/swarm-sonar_db.1.em4yby2u5v9b5eoz4qxmbmcto"],
@@ -562,6 +566,7 @@ module.exports = {
             www: {
               logs: logs.www,
               container: {
+                node: "10.25.96.21",
                 id:
                   "88f7b6be6d382665a2b37260f5e42939e49549532f8705721d5218607af1cb41",
                 name: ["/swarm-sonar_www.1.k45jksij0zwvd1c3yyfd1kuy2"],
@@ -585,6 +590,7 @@ module.exports = {
               errors: "",
               logs: logs.db,
               container: {
+                node: "10.25.96.22",
                 id:
                   "10434d52c8a2652a1bd31a19b16a8f76ae04ae245c0f2f56b781855ddaf63037",
                 name: ["/swarm-sonar_db.1.em4yby2u5v9b5eoz4qxmbmcto"],

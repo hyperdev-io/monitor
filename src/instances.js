@@ -82,7 +82,8 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
         container: {
           id: cnt.Id,
           name: cnt.Names,
-          created: cnt.Created * 1000
+          created: cnt.Created * 1000,
+          node: cnt.node
         },
         ports
       });
