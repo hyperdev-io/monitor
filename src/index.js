@@ -15,6 +15,10 @@ const opts = {
   }
 };
 
+process.on("unhandledRejection", up => {
+  // Crash the node process on ounhandled rejection
+  throw up;
+});
 module.exports = () => {
   assert(managerUrl, "SWARM_MANAGER_URL is required");
   assert(networkName, "NET_NAME is required");
