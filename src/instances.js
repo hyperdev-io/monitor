@@ -50,48 +50,68 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
       };
     }
 
-    const logsUrl = `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true&tail=1000`;
-    instances[instanceName].services[serviceName] = {
-      fqdn: `${serviceName}.${instanceName}.${domain}.${tld}`,
-      ip: getIP(srv.CurrentTasks, networkName),
-      state: srv.CurrentTasks
-        ? calcServiceState("running", srv.CurrentTasks)
-        : "failing",
-      endpoint: {
-        path: labels["bigboat.instance.endpoint.path"],
-        protocol: labels["bigboat.instance.endpoint.protocol"]
-      },
-      errors: srv.CurrentTasks.map(t => t.Status.Err).join(";"),
-      logs: {
-        "200": `${logsUrl}&tail=200`,
-        "500": `${logsUrl}&tail=500`,
-        "1000": `${logsUrl}&tail=1000`,
-        all: logsUrl,
-        follow: `${logsUrl}&follow=true`
-      }
-    };
+    let currentService = instances[instanceName].services[serviceName];
 
-    if (instances[instanceName].services[serviceName].state !== "running")
-      instances[instanceName].state = "failing";
+    if (labels["bigboat.service.type"] === "service") {
+      const logsUrl = `${swarmManagerUrl}/services/${srv.ID}/logs?timestamps=true&stdout=true&stderr=true`;
+      currentService = _.merge(currentService, {
+        fqdn: `${serviceName}.${instanceName}.${domain}.${tld}`,
+        ip: getIP(srv.CurrentTasks, networkName),
+        state: srv.CurrentTasks
+          ? calcServiceState("running", srv.CurrentTasks)
+          : "failing",
+        endpoint: {
+          path: labels["bigboat.instance.endpoint.path"],
+          protocol: labels["bigboat.instance.endpoint.protocol"]
+        },
+        errors: srv.CurrentTasks.map(t => t.Status.Err).join(";"),
+        logs: {
+          "200": `${logsUrl}&tail=200`,
+          "500": `${logsUrl}&tail=500`,
+          "1000": `${logsUrl}&tail=1000`,
+          all: logsUrl,
+          follow: `${logsUrl}&follow=true`
+        }
+      });
+      if (currentService.state !== "running")
+        instances[instanceName].state = "failing";
+    }
+
+    if (labels["bigboat.service.type"] === "ssh") {
+      currentService = _.merge(currentService, {
+        ssh: {
+          fqdn: `ssh.${serviceName}.${instanceName}.${domain}.${tld}`,
+          ip: getIP(srv.CurrentTasks, networkName),
+          state: srv.CurrentTasks
+            ? calcServiceState("running", srv.CurrentTasks)
+            : "failing",
+          errors: srv.CurrentTasks.map(t => t.Status.Err).join(";")
+        }
+      });
+    }
+
+    instances[instanceName].services[serviceName] = currentService;
     return instances;
   }, {});
 
   return containers.reduce((state, cnt) => {
     const labels = cnt.Labels;
-    const instanceName = labels["bigboat.instance.name"];
-    const serviceName = labels["bigboat.service.name"];
-    if (state[instanceName] && state[instanceName].services[serviceName]) {
-      let srv = state[instanceName].services[serviceName];
-      const ports = cnt.Ports.map(p => `${p.PrivatePort}/${p.Type}`);
-      srv = _.merge(srv, {
-        container: {
-          id: cnt.Id,
-          name: cnt.Names,
-          created: cnt.Created * 1000,
-          node: cnt.node
-        },
-        ports
-      });
+    if (labels["bigboat.service.type"] === "service") {
+      const instanceName = labels["bigboat.instance.name"];
+      const serviceName = labels["bigboat.service.name"];
+      if (state[instanceName] && state[instanceName].services[serviceName]) {
+        let srv = state[instanceName].services[serviceName];
+        const ports = cnt.Ports.map(p => `${p.PrivatePort}/${p.Type}`);
+        srv = _.merge(srv, {
+          container: {
+            id: cnt.Id,
+            name: cnt.Names,
+            created: cnt.Created * 1000,
+            node: cnt.node
+          },
+          ports
+        });
+      }
     }
     return state;
   }, swarm);
