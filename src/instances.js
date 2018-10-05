@@ -25,7 +25,7 @@ const getIP = (tasks, netName) => {
   }
 };
 
-module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
+module.exports = (networkName, swarmManagerUrl) => services => {
   const swarm = services.reduce((instances, srv) => {
     const labels = srv.Spec.Labels;
     const instanceName = labels["bigboat.instance.name"];
@@ -94,25 +94,5 @@ module.exports = (networkName, swarmManagerUrl) => (services, containers) => {
     return instances;
   }, {});
 
-  return containers.reduce((state, cnt) => {
-    const labels = cnt.Labels;
-    if (labels["bigboat.service.type"] === "service") {
-      const instanceName = labels["bigboat.instance.name"];
-      const serviceName = labels["bigboat.service.name"];
-      if (state[instanceName] && state[instanceName].services[serviceName]) {
-        let srv = state[instanceName].services[serviceName];
-        const ports = cnt.Ports.map(p => `${p.PrivatePort}/${p.Type}`);
-        srv = _.merge(srv, {
-          container: {
-            id: cnt.Id,
-            name: cnt.Names,
-            created: cnt.Created * 1000,
-            node: cnt.node
-          },
-          ports
-        });
-      }
-    }
-    return state;
-  }, swarm);
+  return swarm;
 };
