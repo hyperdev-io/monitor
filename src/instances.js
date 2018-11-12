@@ -20,7 +20,11 @@ const reduceIPs = (agg, na) => {
 const getIP = (tasks, netName) => {
   if (tasks && tasks.map) {
     return _.flatten(
-      tasks.map(t => t.NetworksAttachments.reduce(reduceIPs, {})[netName])
+      tasks.map(t => {
+        if (t.NetworksAttachments) {
+          return t.NetworksAttachments.reduce(reduceIPs, {})[netName];
+        }
+      })
     )[0];
   }
 };
