@@ -32,6 +32,8 @@
     "testdouble": "^3.2.6"
   },
   "nyc": {
-    "exclude": ["tests/**"]
+    "exclude": [
+      "tests/**"
+    ]
   }
 }
