@@ -68,6 +68,7 @@ module.exports = (networkName, swarmManagerUrl) => services => {
           path: labels["bigboat.instance.endpoint.path"],
           protocol: labels["bigboat.instance.endpoint.protocol"]
         },
+        labels: labels,
         errors: srv.CurrentTasks.map(t => t.Status.Err).join(";"),
         logs: {
           "200": `${logsUrl}&tail=200`,
