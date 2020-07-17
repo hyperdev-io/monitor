@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@bigboat/mqtt-client": "^1.1.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "most": "^1.7.0",
     "node-fetch": "^1.7.3"
   },
