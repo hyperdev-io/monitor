@@ -20,15 +20,15 @@
     "node-fetch": "^1.7.3"
   },
   "devDependencies": {
-    "mocha": "^3.5.3",
+    "mocha": "^10.2.0",
     "nodemon": "^1.12.1",
     "nyc": "^11.2.1",
-    "stryker": "^0.10.2",
+    "stryker": "^0.35.1",
     "stryker-api": "^0.9.0",
     "stryker-baseline-reporter": "^1.0.2",
-    "stryker-html-reporter": "^0.8.0",
-    "stryker-mocha-framework": "^0.5.0",
-    "stryker-mocha-runner": "^0.8.0",
+    "stryker-html-reporter": "^0.18.1",
+    "stryker-mocha-framework": "^0.15.1",
+    "stryker-mocha-runner": "^0.17.1",
     "testdouble": "^3.2.6"
   },
   "nyc": {
